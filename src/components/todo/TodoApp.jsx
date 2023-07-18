@@ -14,8 +14,7 @@ export default function TodoApp() {
                     <Route path='/login' element={ <LoginComponent /> } />
                     <Route path='/welcome/:username' element={<WelcomeComponent /> }  />
                     <Route path='/todos' element={<ListTodosComponent /> } />
-                    <Route path='/logout' element={<LogoutComponent /> } />                    
-
+                    
 
 
                     <Route path='*' element={<ErrorComponent /> }></Route>
@@ -121,10 +120,10 @@ function ListTodosComponent() {
 
 
                 return (
-                    <div className="ListTodosComponent">
+                    <div className="container">
                         <h1>Things You Want To Do!</h1>
                         <div>
-                            <table>
+                            <table className='table'>
                                 <thead>
                                         <tr>
                                             <td>ID</td>
