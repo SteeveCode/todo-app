@@ -40,26 +40,9 @@ function LoginComponent() {
         setShowSuccessMessage(false)
         setShowErrorMessage(true)
     }
-
 }
+   
 
-function SuccessMessageComponent() {
-
-    if(showSuccessMessage) {
-        return <div className="successMessage">Authenticated Successfully</div>
-    }
-    
-    return null   
-}
-
-function ErrorMessageComponent() {
-
-    if(showErrorMessage) {
-        return <div className="errorMessage">Authentication Failed. Please check your credentials.</div>
-    }
-    
-    return null   
-}
 
     return (
 
@@ -67,8 +50,8 @@ function ErrorMessageComponent() {
         <div className="Login">
             <div className="LoginForm">
                 <div>
-                    <SuccessMessageComponent />
-                    <ErrorMessageComponent />
+                    {showSuccessMessage && <div className="successMessage">Authenticated Successfully</div>}
+                    {showErrorMessage && <div className="errorMessage">Authentication Failed. Please check your credentials.</div>}
                     <label>User Name:</label>
                     <input type="text" name="username" value={username} onChange={handleUserNameChange}/>
                 </div>
