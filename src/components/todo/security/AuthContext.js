@@ -7,19 +7,23 @@ export const AuthContext = createContext()
 
 export const useAuth = () => useContext(AuthContext)
 
-//2: Share the created contect with other components
+//2: Share the created context with other components
 export default function AuthProvider({children}){
 
     //3: Put some state in the context
     const [isAuthenticated, setAuthenticated] = useState(false)
 
+    const [username, setUsername] = useState(null)
+
     function login(username, password){
         if(username==='in28ms' && password==='dummy'){
             setAuthenticated(true)
+            setUsername(username)
             return true
      
          } else {
             setAuthenticated(false)
+            setUsername(null)
             return false
          }
      }
@@ -30,8 +34,9 @@ export default function AuthProvider({children}){
      
 
     return(
-        // shorthand method of creating an object & passing it as variable in JS
-        <AuthContext.Provider value={ {isAuthenticated, login, logout} }> 
+        // The {{}} is a shorthand method of creating an object & passing it as variable in JS. 
+        // AuthContext.Provider makes it possible to expose variables & functions to all other components in the application
+        <AuthContext.Provider value={ {isAuthenticated, login, logout, username} }> 
             {children}
         </AuthContext.Provider>
     )
