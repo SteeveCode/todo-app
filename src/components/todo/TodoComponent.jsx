@@ -1,8 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { retrieveTodoApi, updateTodoApi } from "./api/TodoApiService"
+import { createTodoApi, retrieveTodoApi, updateTodoApi } from "./api/TodoApiService"
 import { useAuth } from "./security/AuthContext"
 import { useEffect, useState } from "react"
 import {Formik, Form, Field, ErrorMessage} from 'formik'
+import moment from "moment/moment"
 
 export default function TodoComponent(){
     const {id} = useParams()
@@ -21,13 +22,15 @@ export default function TodoComponent(){
 
     function retrieveTodos(){
 
-        retrieveTodoApi(username, id)
-        .then(response => {
+        if(id != -1){
+            retrieveTodoApi(username, id)
+            .then(response => {
             setDescription(response.data.description)
             setTargetDate(response.data.targetDate)
 
         })
-        .catch(error => console.log(error))
+            .catch(error => console.log(error))
+        }
     }
 
     function onSubmit(values){
@@ -42,11 +45,22 @@ export default function TodoComponent(){
 
         console.log(todo)
 
-        updateTodoApi(username, id, todo)
-        .then(response =>{
+        if(id == -1){
+            createTodoApi(username, todo)
+            .then(response =>{
             navigate('/todos')
-        })
-        .catch(error => console.log(error))
+            })
+            .catch(error => console.log(error))
+
+        } else{
+            updateTodoApi(username, id, todo)
+            .then(response =>{
+            navigate('/todos')
+            })
+            .catch(error => console.log(error))
+
+        }
+
     }
 
     function validate(values){
@@ -55,9 +69,11 @@ export default function TodoComponent(){
             // targetDate: 'Enter a valid target date'
         }
 
-        if(values.description.length < 5){errors.description = 'Enter at least 5 character'}
+        if(values.description.length < 5){
+            errors.description = 'Enter at least 5 character'}
 
-        if(values.targetDate.length == null){errors.targetDate = 'Enter a taget date'}
+        if(values.targetDate.length == null || values.targetDate == '' || !moment(values.targetDate).isValid()){
+            errors.targetDate = 'Enter a taget date'}
 
 
         console.log(values)
